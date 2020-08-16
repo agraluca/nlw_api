@@ -20,7 +20,15 @@ export default class ClassesController {
     if (!filters.subject || !filters.week_day || !filters.time) {
       const allClasses = await db("classes")
         .join("users", "classes.user_id", "=", "users.id")
-        .select(["classes.*", "users.*"]);
+        .join(
+          "class_schedule",
+          "class_schedule.class_id",
+          "=",
+          "classes.user_id"
+        )
+
+        .select(["classes.*", "users.*", "class_schedule.*"]);
+      console.log(allClasses);
       return res.json(allClasses);
     }
 
